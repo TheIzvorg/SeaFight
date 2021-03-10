@@ -24,6 +24,13 @@ struct Options {
 
 };
 
+void SetColor(char symbol, int color) {
+	HANDLE _color = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(_color, color);
+	cout << symbol << " ";
+	SetConsoleTextAttribute(_color, 7);
+}
+
 int ShowMenu() {
 	// TODO: Menu
 	do {
@@ -66,7 +73,8 @@ void ShowMap(Options& options) {
 		for (int j = 0; j < 12; j++) {
 			//Если... то стена
 			if (options.Map[i][j] == 1) {
-				cout << '#' << " ";
+				SetColor('#', 10);
+				// cout << '#' << " ";
 			}
 			//Если... то игрок
 			else if (options.Map[i][j] == 2) {
