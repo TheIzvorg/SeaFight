@@ -50,11 +50,11 @@ int ShowMenu() {
 	do {
 		//������� ����
 		system("cls");
-		cout << "\n\n\t\t\t\t\t����� ���������� � '������� ���!'\n\n"
-			"\t\t\t[1]. ��������� ����\n"
-			"\t\t\t[2]. ��������������������� ����\n"
-			"\t\t\t[3]. ���������\n"
-			"\t\t\t[4]. �����\n";
+		cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой!'\n\n"
+			"\t\t\t[1]. Одиночная игра\n"
+			"\t\t\t[2]. Многопользовательская игра\n"
+			"\t\t\t[3]. Настройки\n"
+			"\t\t\t[4]. Выход\n";
 		int MainMenuOption;
 		cout << "\n\t\t\t[?] - "; cin >> MainMenuOption;
 		switch (MainMenuOption)
@@ -82,30 +82,30 @@ int ShowMenu() {
 }
 
 void ShowMap(Options& options) {
-	//��������� ����� � ����������� �� �������� � �������
+	//Отрисовка карта в зависимости от значения в массиве
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			//����... �� �����
+			//Если... то стена
 			if (options.Map[i][j] == 1) {
 				SetColor('#', 14);
 			}
-			//����... �� �����
+			//Если... то игрок
 			else if (options.Map[i][j] == 2) {
 				SetColor('=', 7);
 			}
-			//����... �� ������
+			//Если... то ничего
 			else if (options.Map[i][j] == 0) {
 				SetColor('~', 9);
 			}
-			//����... �� ����
+			//Если... то мимо
 			else if (options.Map[i][j] == 3) {
 				SetColor('o', 11);
 			}
-			//����... �� ���������
+			//Если... то попадание
 			else if (options.Map[i][j] == 4) {
 				SetColor('x', 6);
 			}
-			//����... �� ���������
+			//Если... то уничтожен
 			else if (options.Map[i][j] == 5) {
 				SetColor('X', 4);
 			}
@@ -115,10 +115,10 @@ void ShowMap(Options& options) {
 }
 
 
-//���� ������� ��� �������� ����
+//Блок методов для главного меню
 void SinglePlayer() {
 	Options options;
-	cout << "\n\n\t\t\t\t\t�� ������� ����� ��������� ����\n\n";
+	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
 	for (int i = 0; i < 10 ; i++) {
 		system("cls");
 		ShowMap(options);
@@ -135,14 +135,14 @@ void SinglePlayer() {
 
 }
 void MultiPlayer() {
-	cout << "�� ������� ����� ��������������������� ����";
+	cout << "Вы выбрали режим многопользовательской игры";
 }
 void Settings() {
-	cout << "�� ����� � ���������";
+	cout << "Вы зашли в настройки";
 }
 void Exit() {
 	system("cls");
-	cout << "����� �� ����...\n";
+	cout << "Выход из игры...\n";
 	exit(0);
 }
 
