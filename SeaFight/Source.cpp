@@ -1,5 +1,7 @@
 ﻿#include <iostream>;
 #include <Windows.h>;
+#include <conio.h>;
+#include <ctime>;
 using namespace std;
 
 void SinglePlayer(),
@@ -8,8 +10,8 @@ void SinglePlayer(),
 	 Exit();
 
 struct Options {
-	//������ ���� ���
-	int Map[20][20] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
+	//Пустое поле боя
+	int Map[12][12] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
@@ -32,7 +34,7 @@ struct Options {
 
 
 	int size;
-	int Map[10][10];
+	//int Map[10][10];
 	bool isRandomPlace = false;
 	int ShipColor = 7;
 	int ShipCount = 0;
@@ -157,13 +159,14 @@ void PlaceShip(Options& options) {
 		case 'A':
 		case 'a':
 		case 75:
-			if (options.Map[options.playerX - 1][options.playerY] != 1) {
-				options.playerX--;
-				options.Map[options.playerX + 1][options.playerY] = 0;
+			if (options.Map[options.PlayerX - 1][options.PlayerY] != 1) {
+				options.PlayerX--;
+				options.Map[options.PlayerX + 1][options.PlayerY] = 0;
 			}
 			isStop = true;
 			break;
-
+		}
+	}
 }
 
 void PlayerMove() {
