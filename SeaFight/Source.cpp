@@ -9,19 +9,11 @@ void SinglePlayer(),
 
 struct Options {
 	//Пустое поле боя
-	int Map[20][20] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,1,1,1,1,1,1,1,1,1,1,1, } };
-
+	int size;
+	int Map[10][10];
+	bool isRandomPlace = false;
+	int ShipColor = 7;
+	int ShipCount = 0;
 };
 
 void SetColor(char symbol, int color) {
@@ -137,5 +129,7 @@ int main() {
 	// TODO: Sea Fight
 	setlocale(0, "");
 	Options options;
-	ShowMenu();
+	do {
+		ShowMenu();
+	} while (options.ShipCount != 0);
 }
