@@ -5,10 +5,9 @@
 using namespace std;
 
 void SinglePlayer(),
-	 MultiPlayer(),
-	 Settings(),
-	 Exit();
-
+MultiPlayer(),
+Settings(),
+Exit();
 struct Options {
 	//Пустое поле боя
 	int Map[12][12] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
@@ -29,7 +28,7 @@ struct Options {
 		shipL = 2,
 		shipXL = 1;
 
-	int PlayerX, PlayerY;
+	int PlayerX = 6, PlayerY = 4;
 
 
 
@@ -47,9 +46,9 @@ void SetColor(char symbol, int color) {
 	SetConsoleTextAttribute(_color, 7);
 }
 
-int ShowMenu() {
+void ShowMenu() {
 	// TODO: Menu
-	do {
+
 		//Главное меню
 		system("cls");
 		cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой!'\n\n"
@@ -76,7 +75,7 @@ int ShowMenu() {
 		default:
 			break;
 		}
-	} while (true);
+
 	// SinglePlayer
 	// Player vs Player
 	// Settings (Map size, ships color, manual or randomed placement)
@@ -117,6 +116,37 @@ void ShowMap(Options& options) {
 }
 
 
+void PlaceShip(Options& options) {
+	bool isStop = false;
+	while (!isStop) {
+		switch (_getch())
+		{
+		case 'A':
+		case 'a':
+		case 75:
+			if (options.Map[options.PlayerX - 1][options.PlayerY] != 1) {
+				options.PlayerX--;
+				isStop = true;
+				for (int i = 0; i <= 4; i++) {
+					if (options.Map[options.PlayerX][options.PlayerY + i] != 2) {
+						options.Map[options.PlayerX][options.PlayerY + i] = 0;
+						
+					}
+				}
+			}
+			break;
+		}
+		options.Map[options.PlayerY][options.PlayerX] = 2;
+	}
+}
+
+void PlayerMove() {
+
+}
+
+void BotMove() {
+
+}
 //Блок методов для главного меню
 void SinglePlayer() {
 	Options options;
@@ -129,10 +159,8 @@ void SinglePlayer() {
 			<< "\nL  - " << options.shipL
 			<< "\nM  - " << options.shipM
 			<< "\nS  - " << options.shipS;
+		PlaceShip(options);
 
-
-
-		system("pause");
 	}
 
 }
@@ -151,31 +179,6 @@ void Exit() {
 
 
 
-void PlaceShip(Options& options) {
-	bool isStop = false;
-	while (!isStop) {
-		switch (_getch())
-		{
-		case 'A':
-		case 'a':
-		case 75:
-			if (options.Map[options.PlayerX - 1][options.PlayerY] != 1) {
-				options.PlayerX--;
-				options.Map[options.PlayerX + 1][options.PlayerY] = 0;
-			}
-			isStop = true;
-			break;
-		}
-	}
-}
-
-void PlayerMove() {
-
-}
-
-void BotMove() {
-
-}
 
 int main() {
 	// TODO: Sea Fight
