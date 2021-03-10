@@ -15,12 +15,21 @@ struct Options {
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
-						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,2,2,2,2,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,1,1,1,1,1,1,1,1,1,1,1, } };
+
+	int shipS = 4, 
+		shipM = 3,
+		shipL = 2,
+		shipXL = 1;
+
+	int PlayerX, PlayerY;
+
+
 
 };
 
@@ -73,28 +82,27 @@ void ShowMap(Options& options) {
 		for (int j = 0; j < 12; j++) {
 			//Если... то стена
 			if (options.Map[i][j] == 1) {
-				SetColor('#', 10);
-				// cout << '#' << " ";
+				SetColor('#', 14);
 			}
 			//Если... то игрок
 			else if (options.Map[i][j] == 2) {
-				cout << '*' << " ";
+				SetColor('=', 7);
 			}
 			//Если... то ничего
 			else if (options.Map[i][j] == 0) {
-				cout << '~' << " ";
+				SetColor('~', 9);
 			}
 			//Если... то мимо
 			else if (options.Map[i][j] == 3) {
-				cout << 'o' << " ";
+				SetColor('o', 11);
 			}
 			//Если... то попадание
 			else if (options.Map[i][j] == 4) {
-				cout << 'x' << " ";
+				SetColor('x', 6);
 			}
 			//Если... то уничтожен
 			else if (options.Map[i][j] == 5) {
-				cout << 'X' << " ";
+				SetColor('X', 4);
 			}
 		}
 		cout << endl;
@@ -105,10 +113,21 @@ void ShowMap(Options& options) {
 //Блок методов для главного меню
 void SinglePlayer() {
 	Options options;
-	system("cls");
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
-	ShowMap(options);
-	system("pause");
+	for (int i = 0; i < 10 ; i++) {
+		system("cls");
+		ShowMap(options);
+		cout << "\nОсталось кораблей"
+			<< "\nXL - " << options.shipXL
+			<< "\nL  - " << options.shipL
+			<< "\nM  - " << options.shipM
+			<< "\nS  - " << options.shipS;
+
+
+
+		system("pause");
+	}
+
 }
 void MultiPlayer() {
 	cout << "Вы выбрали режим многопользовательской игры";
@@ -124,6 +143,23 @@ void Exit() {
 
 
 
+
+void PlaceShip(Options& options) {
+	bool isStop = false;
+	while (!isStop) {
+		switch (_getch())
+		{
+		case 'A':
+		case 'a':
+		case 75:
+			if (options.Map[options.playerX - 1][options.playerY] != 1) {
+				options.playerX--;
+				options.Map[options.playerX + 1][options.playerY] = 0;
+			}
+			isStop = true;
+			break;
+
+}
 
 void PlayerMove() {
 
