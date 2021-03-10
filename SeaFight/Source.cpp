@@ -48,7 +48,7 @@ void SetColor(char symbol, int color) {
 int ShowMenu() {
 	// TODO: Menu
 	do {
-		//������� ����
+		//Главное меню
 		system("cls");
 		cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой!'\n\n"
 			"\t\t\t[1]. Одиночная игра\n"
