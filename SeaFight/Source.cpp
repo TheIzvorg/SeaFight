@@ -30,6 +30,7 @@ struct Options {
 
 	int PlayerX = 6, PlayerY = 4;
 
+	// Тест
 
 
 	int size;
