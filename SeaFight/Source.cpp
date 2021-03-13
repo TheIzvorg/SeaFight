@@ -285,9 +285,35 @@ void Exit() {
 	exit(0);
 }
 
-
-
-
+int KoStIlnAxOd() {
+	int Choise;
+	switch (Choise)
+	{
+	case 'A':
+		Choise = 1;
+	case 'B':
+		Choise = 2;
+	case 'C':
+		Choise = 3;
+	case 'D':
+		Choise = 4;
+	case 'E':
+		Choise == 5;
+	case 'F':
+		Choise == 6;
+	case 'G':
+		Choise == 7;
+	case 'H':
+		Choise == 8;
+	case 'I':
+		Choise == 9;
+	case 'J':
+		Choise == 10;
+	default:
+		break;
+	}
+	return Choise;
+}
 
 int main() {
 	// TODO: Sea Fight
