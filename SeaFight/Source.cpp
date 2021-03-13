@@ -223,13 +223,14 @@ void PlaceShip(Options& options) {
 						for (int j = 0; j < 4; j++) {
 							// Заполняю этот массив следующим образом:
 							// Используя координаты палуб я забираю с карты кусок 4 на 4, где находится корабль
-							bufferArray[i][j] = options.Map[cord[i][0] + i][cord[j][1] + j % 2];
+							bufferArray[i][j] = options.Map[cord[i][0]][cord[j][1] + j / 2];
 						}
-						// И убираю все палубы с карты
-						options.Map[cord[i][1]][cord[i][0]] = 0;
+						
 					}
 					int buf[4][4];
 					for (int i = 0; i < 4; i++){
+						// И убираю все палубы с карты
+						options.Map[cord[i][1]][cord[i][0]] = 0;
 						for (int j = 0; j < 4; j++) {
 							// Дальше просто разворачиваю массив просто меняя местами Y с X
 							buf[j][i] = bufferArray[i][j];
@@ -239,7 +240,9 @@ void PlaceShip(Options& options) {
 						for (int j = 0; j < 4; j++) {
 							// И вывожу изменённые координаты палуб на карту
 							// К сожалению этот этап пока работает не верно.
-							options.Map[cord[i][1]][cord[j][0]] = buf[i][j];
+							if (buf[i][j] == 9) {
+								options.Map[cord[i][1]+i][cord[j][0]+j] = buf[i][j];
+							}
 						}
 					}
 				}
