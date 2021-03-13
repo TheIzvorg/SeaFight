@@ -7,7 +7,8 @@ using namespace std;
 void SinglePlayer(),
 MultiPlayer(),
 Settings(),
-Exit();
+Exit(),
+BotMove();
 struct Options {
 	//Пустое поле боя
 	int Map[12][12] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
@@ -22,6 +23,19 @@ struct Options {
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,0,0,0,0,0,0,0,0,0,0,1, },
 						{1,1,1,1,1,1,1,1,1,1,1,1, } };
+
+	int enemyMap[12][12] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,0,0,0,0,0,0,0,0,0,0,1, },
+							 {1,1,1,1,1,1,1,1,1,1,1,1, } };
 
 	int shipS = 4, 
 		shipM = 3,
@@ -38,6 +52,7 @@ struct Options {
 	bool isRandomPlace = false;
 	int ShipColor = 7;
 	int ShipCount = 0;
+
 };
 
 void SetColor(char symbol, int color) {
@@ -52,7 +67,7 @@ void ShowMenu() {
 
 		//Главное меню
 		system("cls");
-		cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой!'\n\n"
+		cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой'!\n\n"
 			"\t\t\t[1]. Одиночная игра\n"
 			"\t\t\t[2]. Многопользовательская игра\n"
 			"\t\t\t[3]. Настройки\n"
@@ -111,6 +126,9 @@ void ShowMap(Options& options) {
 			else if (options.Map[i][j] == 5) {
 				SetColor('X', 4);
 			}
+			else if (options.enemyMap[i][j] != 999) {
+				SetColor('~', 9);
+			}
 		}
 		cout << endl;
 	}
@@ -149,7 +167,7 @@ void PlaceShip(Options& options) {
 			case 'A':
 			case 'a':
 			case 75:
-				// Как проверку я использую координаты крайных палуб карабля
+				// Как проверку я использую координаты крайных палуб корабля
 				// Пока такая проверка настроенна только на 4-х палубники, но после это исправлю
 				if (options.Map[cord[3][1]][cord[3][0] - 1] != 1 && options.Map[cord[0][1]][cord[0][0] - 1] != 1) {
 					for (int i = 0; i < 4; i++) {
@@ -249,11 +267,31 @@ void PlaceShip(Options& options) {
 	}
 }
 
-void PlayerMove() {
+void PlayerMove(Options& options) {
+	cout << "Ваша ход!";
+	ShowMap(options);
+	char hitX; int hitY;
+	cout << "Куда вы хотите ударить?"; cin >> hitX; cin >> hitY;
+
+
+
+
 
 }
 
-void BotMove() {
+void BotMove(Options& options) {
+	srand(time(0));
+	int i1 = rand() % 10 + 1,
+		i2 = rand() % 10 + 1;
+	if (options.Map[i1][i2] == 0) {
+		options.Map[i1][i2] = 3;
+	}
+	else if (options.Map[i1][i2] == 2) {
+		options.Map[i1][i2] = 4;
+	}
+
+	cout << endl << "Противник ударил по координатам: " << endl << "[X]: " << i1 << endl << "[Y]: " << i2;
+
 
 }
 //Блок методов для главного меню
@@ -268,6 +306,7 @@ void SinglePlayer() {
 			<< "\nL  - " << options.shipL
 			<< "\nM  - " << options.shipM
 			<< "\nS  - " << options.shipS;
+		BotMove(options);
 		PlaceShip(options);
 
 	}
