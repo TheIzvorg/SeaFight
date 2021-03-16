@@ -721,7 +721,7 @@ void Exit() {
 	exit(0);
 }
 
-int ShowMenu() {
+void ShowMenu() {
 	int Choise; cin >> Choise;
 	switch (Choise)
 	{
