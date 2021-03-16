@@ -69,13 +69,10 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 	}
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (isEnemyMap) {
-				SetColor('~', 9);
-			}
-			else if (Map[i][j] == 1) {
+			if (Map[i][j] == 1) {
 				SetColor('#', 14);
 			}
-			else if (Map[i][j] == 2 || Map[i][j] == 9) {
+			else if (Map[i][j] == 2 || Map[i][j] == 9 && !isEnemyMap) {
 				SetColor('=', 7);
 			}
 			else if (Map[i][j] == 0 || Map[i][j] == 8) {
@@ -681,7 +678,13 @@ void BotMove(Options& options) {
 	srand(time(0));
 	int i1 = rand() % 10 + 1,
 		i2 = rand() % 10 + 1;
-	if (options.FirstMap[i1][i2] == 0) {
+	bool isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
+	for (int i = 0; isRerun; i++) {
+		i1 = rand() % 10 + 1;
+		i2 = rand() % 10 + 1;
+		isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
+	}
+	if (options.FirstMap[i1][i2] == 0 || options.FirstMap[i1][i2] == 8) {
 		options.FirstMap[i1][i2] = 3;
 	}
 	else if (options.FirstMap[i1][i2] == 2) {
@@ -693,20 +696,24 @@ void BotMove(Options& options) {
 void SinglePlayer() {
 	Options options;
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
+	bool place = true;
 	for (int i = 0; i < 100 ; i++) {
 		system("cls");
-		ShowMap(options);
-
-		if (options.isRandomPlace) {
-			RandomShip(options);
+		if (options.isRandomPlace && place) {
+			RandomShip(options,true);
+			RandomShip(options,false);
+			place = !place;
 		}
-		else {
+		else if (place) {
 			PlaceShip(options);
+			RandomShip(options, false);
+			place = !place;
 		}
+		ShowMap(options);
+		ShowMap(options,true);
 		PlayerMove(options);
 		BotMove(options);
 	}
-
 }
 
 void MultiPlayer() {
