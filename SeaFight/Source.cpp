@@ -5,8 +5,30 @@
 using namespace std;
 
 struct Options {
-	int FirstMap[12][12] = { 0 };
-	int SecondMap[12][12] = { 0 };
+	int FirstMap[12][12] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,1,1,1,1,1,1,1,1,1,1,1, } };
+	int SecondMap[12][12] = { {1,1,1,1,1,1,1,1,1,1,1,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,0,0,0,0,0,0,0,0,0,0,1, },
+						{1,1,1,1,1,1,1,1,1,1,1,1, } };
 
 	int shipS = 0, 
 		shipM = 0,
@@ -50,13 +72,13 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 			if (isEnemyMap) {
 				SetColor('~', 9);
 			}
-			else if (Map[i][j] == 8) {
+			else if (Map[i][j] == 1) {
 				SetColor('#', 14);
 			}
 			else if (Map[i][j] == 2 || Map[i][j] == 9) {
 				SetColor('=', 7);
 			}
-			else if (Map[i][j] == 0 || Map[i][j] == 0) {
+			else if (Map[i][j] == 0 || Map[i][j] == 8) {
 				SetColor('~', 9);
 			}
 			else if (Map[i][j] == 3) {
@@ -94,11 +116,14 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 		if (options.shipXL != 1) {
 			bool isStop = false;
 			for (; !isStop;) {
-				int X = rand() % 6 + 3;
-				int Y = rand() % 6 + 3;
+				int X = rand() % 10 + 1;
+				int Y = rand() % 10 + 1;
 				switch (rand() % 4 + 1) {
 				case 1:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X+1][Y] != 1 && Map[X+1][Y] != 8 && Map[X+1][Y] != 2 &&
+						Map[X+2][Y] != 1 && Map[X+2][Y] != 8 && Map[X+2][Y] != 2 &&
+						Map[X+3][Y] != 1 && Map[X+3][Y] != 8 && Map[X+3][Y] != 2) {
 						for (int o = 0; o < 4; o++) {
 							Map[X + o][Y] = 2;
 							Map[X + o][Y - 1] = 8;
@@ -116,7 +141,10 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 2:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X - 1][Y] != 1 && Map[X - 1][Y] != 8 && Map[X-1][Y] != 2 &&
+						Map[X - 2][Y] != 1 && Map[X - 2][Y] != 8 && Map[X-2][Y] != 2 &&
+						Map[X - 3][Y] != 1 && Map[X - 3][Y] != 8 && Map[X-3][Y] != 2) {
 						for (int o = 0; o < 4; o++) {
 							Map[X - o][Y] = 2;
 							Map[X - o][Y - 1] = 8;
@@ -134,7 +162,10 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 3:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X][Y+1] != 1 && Map[X][Y+1] != 8 && Map[X][Y+1] != 2 &&
+						Map[X][Y+2] != 1 && Map[X][Y+2] != 8 && Map[X][Y+2] != 2 &&
+						Map[X][Y+3] != 1 && Map[X][Y+3] != 8 && Map[X][Y+3] != 2) {
 						for (int o = 0; o < 4; o++) {
 							Map[X][Y + o] = 2;
 							Map[X - 1][Y + o] = 8;
@@ -152,7 +183,10 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 4:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X][Y - 1] != 1 && Map[X][Y - 1] != 8 && Map[X][Y-1] != 2 &&
+						Map[X][Y - 2] != 1 && Map[X][Y - 2] != 8 && Map[X][Y-2] != 2 &&
+						Map[X][Y - 3] != 1 && Map[X][Y - 3] != 8 && Map[X][Y-3] != 2) {
 						for (int o = 0; o < 4; o++) {
 							Map[X][Y - o] = 2;
 							Map[X - 1][Y - o] = 8;
@@ -176,11 +210,13 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 		if (options.shipL != 2) {
 			bool isStop = false;
 			for (; !isStop;) {
-				int X = rand() % 6 + 3;
-				int Y = rand() % 6 + 3;
+				int X = rand() % 10 + 1;
+				int Y = rand() % 10 + 1;
 				switch (rand() % 4 + 1) {
 				case 1:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X + 1][Y] != 1 && Map[X + 1][Y] != 8 && Map[X+1][Y] != 2 &&
+						Map[X + 2][Y] != 1 && Map[X + 2][Y] != 8 && Map[X+2][Y] != 2) {
 						for (int o = 0; o < 3; o++) {
 							if (Map[X + o][Y] != 2 && Map[X + o][Y] != 8) {
 								Map[X + o][Y] = 2;
@@ -200,7 +236,9 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 2:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X - 1][Y] != 1 && Map[X - 1][Y] != 8 && Map[X-1][Y] != 2 &&
+						Map[X - 2][Y] != 1 && Map[X - 2][Y] != 8 && Map[X-2][Y] != 2) {
 						for (int o = 0; o < 3; o++) {
 							if (Map[X - o][Y] != 2 && Map[X - o][Y] != 8) {
 								Map[X - o][Y] = 2;
@@ -220,7 +258,9 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 3:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X][Y + 1] != 1 && Map[X][Y + 1] != 8 && Map[X][Y+1] != 2 &&
+						Map[X][Y + 2] != 1 && Map[X][Y + 2] != 8 && Map[X][Y+2] != 2) {
 						for (int o = 0; o < 3; o++) {
 							if (Map[X][Y + o] != 2 && Map[X][Y + o] != 8)
 							{
@@ -241,7 +281,9 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 4:
-					if (X >= 0 + 3 && X <= 12 - 3 && Y >= 0 + 3 && Y <= 12 - 3) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X][Y - 1] != 1 && Map[X][Y - 1] != 8 && Map[X][Y-1] != 2 &&
+						Map[X][Y - 2] != 1 && Map[X][Y - 2] != 8 && Map[X][Y-2] != 2) {
 						for (int o = 0; o < 3; o++) {
 							if (Map[X][Y - o] != 2 && Map[X][Y - o] != 8) {
 								Map[X][Y - o] = 2;
@@ -267,11 +309,12 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 		if (options.shipM != 3) {
 			bool isStop = false;
 			for (; !isStop;) {
-				int X = rand() % 6 + 3;
-				int Y = rand() % 6 + 3;
+				int X = rand() % 10 + 1;
+				int Y = rand() % 10 + 1;
 				switch (rand() % 4 + 1) {
 				case 1:
-					if (X >= 0 + 1 && X <= 12 - 1 && Y >= 0 + 1 && Y <= 12 - 1) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X + 1][Y] != 1 && Map[X + 1][Y] != 8 && Map[X+1][Y] != 2) {
 						for (int o = 0; o < 2; o++) {
 							if (Map[X + o][Y] != 2 && Map[X + o][Y] != 8) {
 								Map[X + o][Y] = 2;
@@ -291,7 +334,8 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 2:
-					if (X >= 0 + 1 && X <= 12 - 1 && Y >= 0 + 1 && Y <= 12 - 1) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X - 1][Y] != 1 && Map[X - 1][Y] != 8 && Map[X-1][Y] != 2) {
 						for (int o = 0; o < 2; o++) {
 							if (Map[X - o][Y] != 2 && Map[X - o][Y] != 8) {
 								Map[X - o][Y] = 2;
@@ -311,7 +355,8 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 3:
-					if (X >= 0 + 1 && X <= 12 - 1 && Y >= 0 + 1 && Y <= 12 - 1) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X][Y + 1] != 1 && Map[X][Y + 1] != 8 && Map[X][Y+1] != 2) {
 						for (int o = 0; o < 2; o++) {
 							if (Map[X][Y + o] != 2 && Map[X][Y + o] != 8)
 							{
@@ -332,7 +377,8 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 4:
-					if (X >= 0 + 1 && X <= 12 - 1 && Y >= 0 + 1 && Y <= 12 - 1) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2 &&
+						Map[X][Y - 1] != 1 && Map[X][Y - 1] != 8 && Map[X][Y-1] != 2) {
 						for (int o = 0; o < 2; o++) {
 							if (Map[X][Y - o] != 2 && Map[X][Y - o] != 8) {
 								Map[X][Y - o] = 2;
@@ -358,11 +404,11 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 		if (options.shipS != 4) {
 			bool isStop = false;
 			for (; !isStop;) {
-				int X = rand() % 6 + 3;
-				int Y = rand() % 6 + 3;
+				int X = rand() % 10 + 1;
+				int Y = rand() % 10 + 1;
 				switch (rand() % 4 + 1) {
 				case 1:
-					if (X >= 0 && X <= 12 && Y >= 0 && Y <= 12) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2) {
 						for (int o = 0; o < 1; o++) {
 							if (Map[X + o][Y] != 2 && Map[X + o][Y] != 8) {
 								Map[X + o][Y] = 2;
@@ -380,7 +426,7 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 2:
-					if (X >= 0 && X <= 12 && Y >= 0 && Y <= 12) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2) {
 						for (int o = 0; o < 1; o++) {
 							if (Map[X - o][Y] != 2 && Map[X - o][Y] != 8) {
 								Map[X - o][Y] = 2;
@@ -398,7 +444,7 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 3:
-					if (X >= 0 && X <= 12 && Y >= 0 && Y <= 12) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2) {
 						for (int o = 0; o < 1; o++) {
 							if (Map[X][Y + o] != 2 && Map[X][Y + o] != 8)
 							{
@@ -417,7 +463,7 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 						break;
 					}
 				case 4:
-					if (X >= 0 && X <= 12 && Y >= 0 && Y <= 12) {
+					if (Map[X][Y] != 1 && Map[X][Y] != 8 && Map[X][Y] != 2) {
 						for (int o = 0; o < 1; o++) {
 							if (Map[X][Y - o] != 2 && Map[X][Y - o] != 8) {
 								Map[X][Y - o] = 2;
@@ -437,6 +483,13 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 				}
 			}
 			options.shipS++;
+		}
+	}
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			if (i == 0 || i == 11 || j == 0 || j == 11) {
+				Map[i][j] = 1;
+			}
 		}
 	}
 	if (isFirstMap) {
