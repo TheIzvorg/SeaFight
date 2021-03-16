@@ -673,7 +673,13 @@ void BotMove(Options& options) {
 	srand(time(0));
 	int i1 = rand() % 10 + 1,
 		i2 = rand() % 10 + 1;
-	if (options.FirstMap[i1][i2] == 0) {
+	bool isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
+	for (int i = 0; isRerun; i++) {
+		i1 = rand() % 10 + 1;
+		i2 = rand() % 10 + 1;
+		isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
+	}
+	if (options.FirstMap[i1][i2] == 0 || options.FirstMap[i1][i2] == 8) {
 		options.FirstMap[i1][i2] = 3;
 	}
 	else if (options.FirstMap[i1][i2] == 2) {
@@ -681,7 +687,6 @@ void BotMove(Options& options) {
 	}
 
 	cout << endl << "Противник ударил по координатам: " << endl << "[X]: " << i1 << endl << "[Y]: " << i2;
-
 
 }
 //Блок методов для главного меню
@@ -696,15 +701,16 @@ void SinglePlayer() {
 			<< "\nL  - " << options.shipL
 			<< "\nM  - " << options.shipM
 			<< "\nS  - " << options.shipS;
-		BotMove(options);
 		if (options.isRandomPlace) {
-			RandomShip(options);
+			RandomShip(options,true);
+			RandomShip(options,false);
 		}
 		else {
 			PlaceShip(options);
+			RandomShip(options, false);
 		}
+		BotMove(options);
 	}
-
 }
 
 void MultiPlayer() {
