@@ -487,8 +487,9 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 	}
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (i == 0 || i == 11 || j == 0 || j == 11) {
-				Map[i][j] = 1;
+			//Если... то стена
+			if (options.Map[i][j] == 1 && options.enemyMap[i][j] == 1) {
+				SetColor('#', 14);
 			}
 		}
 	}
@@ -662,22 +663,29 @@ void PlayerMove(Options& options) {
 	cout << "Куда вы хотите ударить?"; cin >> hitX; cin >> hitY;
 }
 
+//void ReRandom(Options& options) {
+//	srand(time(0));
+//	int i1 = rand() % 10 + 1,
+//		i2 = rand() % 10 + 1;
+//}
+
 void BotMove(Options& options) {
+
 	srand(time(0));
 	int i1 = rand() % 10 + 1,
 		i2 = rand() % 10 + 1;
-	if (options.FirstMap[i1][i2] == 0) {
-		options.FirstMap[i1][i2] = 3;
+	if (options.Map[i1][i2] == 0) {
+		options.Map[i1][i2] = 3;
 	}
-	else if (options.FirstMap[i1][i2] == 2) {
-		options.FirstMap[i1][i2] = 4;
+	else if (options.Map[i1][i2] == 2) {
+		options.Map[i1][i2] = 4;
 	}
 
 	cout << endl << "Противник ударил по координатам: " << endl << "[X]: " << i1 << endl << "[Y]: " << i2;
 
 
 }
-
+//Блок методов для главного меню
 void SinglePlayer() {
 	Options options;
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
@@ -714,16 +722,9 @@ void Exit() {
 	exit(0);
 }
 
-void ShowMenu() {
-	system("cls");
-	cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой'!\n\n"
-		"\t\t\t[1]. Одиночная игра\n"
-		"\t\t\t[2]. Многопользовательская игра\n"
-		"\t\t\t[3]. Настройки\n"
-		"\t\t\t[4]. Выход\n";
-	int MainMenuOption;
-	cout << "\n\t\t\t[?] - "; cin >> MainMenuOption;
-	switch (MainMenuOption)
+int KoStIlnAxOd() {
+	int Choise;
+	switch (Choise)
 	{
 	case 1:
 		SinglePlayer();
