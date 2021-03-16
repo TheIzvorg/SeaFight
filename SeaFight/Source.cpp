@@ -69,13 +69,10 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 	}
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (isEnemyMap) {
-				SetColor('~', 9);
-			}
-			else if (Map[i][j] == 1) {
+			if (Map[i][j] == 1) {
 				SetColor('#', 14);
 			}
-			else if (Map[i][j] == 2 || Map[i][j] == 9) {
+			else if (Map[i][j] == 2 || Map[i][j] == 9 && !isEnemyMap) {
 				SetColor('=', 7);
 			}
 			else if (Map[i][j] == 0 || Map[i][j] == 8) {
@@ -656,10 +653,11 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 }
 
 void PlayerMove(Options& options) {
-	cout << "Ваша ход!";
-	ShowMap(options);
+	cout << "\nВаша ход!\n";
+	//ShowMap(options, true);
 	char hitX; int hitY;
 	cout << "Куда вы хотите ударить?"; cin >> hitX; cin >> hitY;
+	options.SecondMap[hitX][hitY] = 1;
 }
 
 //void ReRandom(Options& options) {
@@ -693,22 +691,22 @@ void BotMove(Options& options) {
 void SinglePlayer() {
 	Options options;
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
+	bool place = true;
 	for (int i = 0; i < 100 ; i++) {
 		system("cls");
-		ShowMap(options);
-		cout << "\nОсталось кораблей"
-			<< "\nXL - " << options.shipXL
-			<< "\nL  - " << options.shipL
-			<< "\nM  - " << options.shipM
-			<< "\nS  - " << options.shipS;
-		if (options.isRandomPlace) {
+		if (options.isRandomPlace && place) {
 			RandomShip(options,true);
 			RandomShip(options,false);
+			place = !place;
 		}
-		else {
+		else if (place) {
 			PlaceShip(options);
 			RandomShip(options, false);
+			place = !place;
 		}
+		ShowMap(options);
+		ShowMap(options,true);
+		PlayerMove(options);
 		BotMove(options);
 	}
 }
