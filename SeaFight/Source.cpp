@@ -722,8 +722,15 @@ void Exit() {
 }
 
 void ShowMenu() {
-	int Choise; cin >> Choise;
-	switch (Choise)
+	system("cls");
+	cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой'!\n\n"
+		"\t\t\t[1]. Одиночная игра\n"
+		"\t\t\t[2]. Многопользовательская игра\n"
+		"\t\t\t[3]. Настройки\n"
+		"\t\t\t[4]. Выход\n";
+	int MainMenuOption;
+	cout << "\n\t\t\t[?] - "; cin >> MainMenuOption;
+	switch (MainMenuOption)
 	{
 	case 1:
 		SinglePlayer();
