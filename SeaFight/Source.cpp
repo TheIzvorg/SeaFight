@@ -656,12 +656,20 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 }
 
 void PlayerMove(Options& options) {
-	cout << "Ваша ход!";
+	system("cls");
+	//сюда вставить cout карты врага через ShowMap();
+	cout << "Ваша ход!\n\n";
 	ShowMap(options);
 	char hitX; int hitY;
-	cout << "Куда вы хотите ударить?"; cin >> hitX; cin >> hitY;
+	cout << "Куда вы хотите ударить?\n[?] - "; cin >> hitX; cin >> hitY;
+	if (options.SecondMap[hitX][hitY] == 0) {
+		options.SecondMap[hitX][hitY] == 3;
+	}
+	else if (options.SecondMap[hitX][hitY] == 2) {
+		options.SecondMap[hitX][hitY] == 4;
+	}
+	//здесь мы обновим массив врага в выводе консоли чтобы увидеть результат
 }
-
 //void ReRandom(Options& options) {
 //	srand(time(0));
 //	int i1 = rand() % 10 + 1,
@@ -679,10 +687,7 @@ void BotMove(Options& options) {
 	else if (options.FirstMap[i1][i2] == 2) {
 		options.FirstMap[i1][i2] = 4;
 	}
-
 	cout << endl << "Противник ударил по координатам: " << endl << "[X]: " << i1 << endl << "[Y]: " << i2;
-
-
 }
 //Блок методов для главного меню
 void SinglePlayer() {
@@ -691,18 +696,15 @@ void SinglePlayer() {
 	for (int i = 0; i < 100 ; i++) {
 		system("cls");
 		ShowMap(options);
-		cout << "\nОсталось кораблей"
-			<< "\nXL - " << options.shipXL
-			<< "\nL  - " << options.shipL
-			<< "\nM  - " << options.shipM
-			<< "\nS  - " << options.shipS;
-		BotMove(options);
+
 		if (options.isRandomPlace) {
 			RandomShip(options);
 		}
 		else {
 			PlaceShip(options);
 		}
+		PlayerMove(options);
+		BotMove(options);
 	}
 
 }
