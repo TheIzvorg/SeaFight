@@ -38,7 +38,7 @@ struct Options {
 	int size = 12;
 	const bool isRandomPlace = true;
 	int ShipColor = 7;
-	int ShipCount1 = 20, ShipCount2 = 20;
+	int ShipCount1 = 0, ShipCount2 = 0;
 
 };
 
