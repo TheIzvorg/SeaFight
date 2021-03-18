@@ -38,7 +38,7 @@ struct Options {
 	int size = 12;
 	const bool isRandomPlace = true;
 	int ShipColor = 7;
-	int ShipCount1 = 0, ShipCount2 = 0;
+	int ShipCount1 = 20, ShipCount2 = 20;
 
 };
 
@@ -99,8 +99,8 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 	}
 }
 
-
 void RandomShip(Options& options, bool isFirstMap = true) {
+	srand(time(0));
 	int Map[12][12];
 	if (isFirstMap) {
 		for (int i = 0; i < 12; i++) {
@@ -516,8 +516,6 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 	}
 }
 
-
-
 bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 	bool isStop = false;
 	int Map[12][12];
@@ -721,12 +719,23 @@ int CharToInt(char symbol) {
 	return result;
 }
 
-void PlayerMove(Options& options) {
+void PlayerMove(Options& options, bool isFirstPlayer = true) {
+	int Map[12][12];
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			if (isFirstPlayer) {
+				Map[i][j] = options.FirstMap[i][j];
+			}
+			else {
+				Map[i][j] = options.SecondMap[i][j];
+			}
+		}
+	}
 	system("cls");
 	//сюда вставить cout карты врага через ShowMap();
 	cout << "Ваша ход!\n\n";
-	ShowMap(options, false);
-	ShowMap(options, true);
+	ShowMap(options, !isFirstPlayer);
+	ShowMap(options, isFirstPlayer);
 	char hitX; int hitY;
 	cout << "Куда вы хотите ударить?\n[?] - "; 
 	cin >> hitX; 
@@ -736,12 +745,28 @@ void PlayerMove(Options& options) {
 		hitX = rand() % 9 + 1;
 		hitY = rand() % 9 + 1;
 	}
-	if (options.SecondMap[hitY][hitX] == 0 || options.SecondMap[hitY][hitX] == 8) {
-		options.SecondMap[hitY][hitX] = 3;
+	if (Map[hitY][hitX] == 0 || Map[hitY][hitX] == 8) {
+		Map[hitY][hitX] = 3;
 	}
-	else if (options.SecondMap[hitY][hitX] == 2) {
-		options.SecondMap[hitY][hitX] = 4;
-		options.ShipCount2--;
+	else if (Map[hitY][hitX] == 2) {
+		Map[hitY][hitX] = 4;
+		if (isFirstPlayer) {
+			options.ShipCount2--;
+		}
+		else {
+			options.ShipCount1--;
+		}
+
+	}
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			if (isFirstPlayer) {
+				options.FirstMap[i][j] = Map[i][j];
+			}
+			else {
+				options.SecondMap[i][j] = Map[i][j];
+			}
+		}
 	}
 	//здесь мы обновим массив врага в выводе консоли чтобы увидеть результат
 }
@@ -785,7 +810,7 @@ void SinglePlayer() {
 	Options options;
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
 	bool place = true;
-	for (int i = 0; i < 100 ; i++) {
+	for (;;) {
 		system("cls");
 		if (options.isRandomPlace && place) {
 			RandomShip(options,true);
@@ -797,9 +822,7 @@ void SinglePlayer() {
 			RandomShip(options, false);
 			place = !place;
 		}
-		ShowMap(options);
-		ShowMap(options,true);
-		PlayerMove(options);
+		PlayerMove(options,true);
 		BotMove(options);
 		if (options.ShipCount1 <= 0) {
 			End(false);
