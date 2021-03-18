@@ -809,19 +809,16 @@ void End(bool isFirstPlWin) {
 void SinglePlayer() {
 	Options options;
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
-	bool place = true;
+	if (options.isRandomPlace) {
+		RandomShip(options, true);
+		RandomShip(options, false);
+	}
+	else {
+		PlaceShip(options);
+		RandomShip(options, false);
+	}
 	for (;;) {
 		system("cls");
-		if (options.isRandomPlace && place) {
-			RandomShip(options,true);
-			RandomShip(options,false);
-			place = !place;
-		}
-		else if (place) {
-			PlaceShip(options);
-			RandomShip(options, false);
-			place = !place;
-		}
 		PlayerMove(options,true);
 		BotMove(options);
 		if (options.ShipCount1 <= 0) {
@@ -834,7 +831,27 @@ void SinglePlayer() {
 }
 
 void MultiPlayer() {
+	Options options;
 	cout << "Вы выбрали режим многопользовательской игры";
+	if (options.isRandomPlace) {
+		RandomShip(options, true);
+		RandomShip(options, false);
+	}
+	else {
+		PlaceShip(options, true);
+		PlaceShip(options, false);
+	}
+	for (;;) {
+		system("cls");
+		PlayerMove(options, true);
+		PlayerMove(options, false);
+		if (options.ShipCount1 <= 0) {
+			End(false);
+		}
+		else if (options.ShipCount2 <= 0) {
+			End(true);
+		}
+	}
 }
 
 void Settings() {
