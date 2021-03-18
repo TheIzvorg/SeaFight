@@ -2,6 +2,8 @@
 #include <Windows.h>;
 #include <conio.h>;
 #include <ctime>;
+#include <string>;
+
 using namespace std;
 
 struct Options {
@@ -36,11 +38,12 @@ struct Options {
 		shipXL = 0;
 
 	int size = 12;
-	const bool isRandomPlace = true;
+	bool isRandomPlace = true;
 	int ShipColor = 7;
 	int ShipCount1 = 20, ShipCount2 = 20;
-
 };
+
+void ShowMenu(Options& options);
 
 void SetColor(char symbol, int color) {
 	HANDLE _color = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -49,16 +52,17 @@ void SetColor(char symbol, int color) {
 	SetConsoleTextAttribute(_color, 7);
 }
 
-void ShowMap(Options options, bool isEnemyMap = false) {
+void ShowMap(Options options, bool move, bool isFirstPlayer = false) {
 	//int** Map = new int *[12];
 	//for (int i = 0; i < 12; i++) Map[i] = new int[12];
 	int Map[12][12];
-	if (!isEnemyMap) {
+	if (isFirstPlayer) {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
 				Map[i][j] = options.FirstMap[i][j];
 			}
 		}
+		cout << "Первый:\n";
 	}
 	else {
 		for (int i = 0; i < 12; i++) {
@@ -66,6 +70,7 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 				Map[i][j] = options.SecondMap[i][j];
 			}
 		}
+		cout << "Второй:\n";
 	}
 	cout << "     a b c d e f g h i j" << endl;
 	for (int i = 0; i < 12; i++) {
@@ -79,8 +84,8 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 			if (Map[i][j] == 1) {
 				SetColor('#', 14);
 			}
-			else if ((Map[i][j] == 2 || Map[i][j] == 9) && !isEnemyMap) {
-				SetColor('=', 7);
+			else if ((Map[i][j] == 2 || Map[i][j] == 9) && move) {
+				SetColor('=', options.ShipColor);
 			}
 			else if (Map[i][j] == 3) {
 				SetColor('o', 11);
@@ -91,7 +96,7 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 			else if (Map[i][j] == 5) {
 				SetColor('X', 4);
 			}
-			else if ((Map[i][j] == 0 || Map[i][j] == 8) || isEnemyMap) {
+			else if ((Map[i][j] == 0 || Map[i][j] == 8) || !move) {
 				SetColor('~', 9);
 			}
 		}
@@ -100,7 +105,7 @@ void ShowMap(Options options, bool isEnemyMap = false) {
 }
 
 void RandomShip(Options& options, bool isFirstMap = true) {
-	srand(time(0));
+	srand(time(0) % (rand() / 2 - 5 / 3 * 2));
 	int Map[12][12];
 	if (isFirstMap) {
 		for (int i = 0; i < 12; i++) {
@@ -734,8 +739,8 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	system("cls");
 	//сюда вставить cout карты врага через ShowMap();
 	cout << "Ваша ход!\n\n";
-	ShowMap(options, !isFirstPlayer);
-	ShowMap(options, isFirstPlayer);
+	ShowMap(options, false, isFirstPlayer);
+	ShowMap(options, true, !isFirstPlayer);
 	char hitX; int hitY;
 	cout << "Куда вы хотите ударить?\n[?] - "; 
 	cin >> hitX; 
@@ -806,8 +811,7 @@ void End(bool isFirstPlWin) {
 	exit(0);
 }
 //Блок методов для главного меню
-void SinglePlayer() {
-	Options options;
+void SinglePlayer(Options& options) {
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
 	if (options.isRandomPlace) {
 		RandomShip(options, true);
@@ -821,6 +825,7 @@ void SinglePlayer() {
 		system("cls");
 		PlayerMove(options,true);
 		BotMove(options);
+		Sleep(500);
 		if (options.ShipCount1 <= 0) {
 			End(false);
 		}
@@ -830,8 +835,8 @@ void SinglePlayer() {
 	}
 }
 
-void MultiPlayer() {
-	Options options;
+void MultiPlayer(Options& options) {
+	
 	cout << "Вы выбрали режим многопользовательской игры";
 	if (options.isRandomPlace) {
 		RandomShip(options, true);
@@ -844,18 +849,44 @@ void MultiPlayer() {
 	for (;;) {
 		system("cls");
 		PlayerMove(options, true);
+		if (options.ShipCount2 <= 0) {
+			End(true);
+		}
 		PlayerMove(options, false);
 		if (options.ShipCount1 <= 0) {
 			End(false);
 		}
-		else if (options.ShipCount2 <= 0) {
-			End(true);
-		}
 	}
 }
 
-void Settings() {
+void Settings(Options& options) {
 	cout << "Вы зашли в настройки";
+	do {
+		system("CLS");
+		cout << "Цвет корабля: ";
+		SetColor('Ц', options.ShipColor);
+		SetColor('В', options.ShipColor);
+		SetColor('Е', options.ShipColor);
+		SetColor('Т', options.ShipColor);
+		cout << "(" << options.ShipColor << ")\n";
+		string randomPla = options.isRandomPlace ? "Вкл.\n" : "Выкл.\n";
+		cout << "Случайное расположение кораблей: " << randomPla;
+		cout << "\n[1] Выбрать новый цвет\n[2] Случайное\\Мануальное расположение кораблей\n[3] Вернуться в меню\n\n[?] ";
+		int newColor = 0;
+		switch (_getch()) {
+		case '1':
+			cout << "Введите любое число, что станет новым цветом: ";
+			cin >> newColor;
+			options.ShipColor = newColor;
+			break;
+		case '2':
+			options.isRandomPlace = !options.isRandomPlace;
+			break;
+		default:
+			ShowMenu(options);
+			break;
+		}
+	} while (true);
 }
 
 void Exit() {
@@ -864,7 +895,7 @@ void Exit() {
 	exit(0);
 }
 
-void ShowMenu() {
+void ShowMenu(Options& options) {
 	system("cls");
 	cout << "\n\n\t\t\t\t\tДобро пожаловать в 'Морской бой'!\n\n"
 		"\t\t\t[1]. Одиночная игра\n"
@@ -876,13 +907,13 @@ void ShowMenu() {
 	switch (MainMenuOption)
 	{
 	case 1:
-		SinglePlayer();
+		SinglePlayer(options);
 		break;
 	case 2:
-		MultiPlayer();
+		MultiPlayer(options);
 		break;
 	case 3:
-		Settings();
+		Settings(options);
 		break;
 	case 4:
 		Exit();
@@ -896,6 +927,6 @@ int main() {
 	setlocale(0, "");
 	Options options;
 	do {
-		ShowMenu();
+		ShowMenu(options);
 	} while (options.ShipCount1 != 0 && options.ShipCount2 != 0);
 }
