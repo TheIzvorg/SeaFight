@@ -724,6 +724,10 @@ int CharToInt(char symbol) {
 	return result;
 }
 
+void Surrender(Options& options, bool isFirstPlayer) {
+	// TODO: Surrender
+}
+
 void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	int Map[12][12];
 	for (int i = 0; i < 12; i++) {
@@ -739,8 +743,8 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	system("cls");
 	//сюда вставить cout карты врага через ShowMap();
 	cout << "Ваша ход!\n\n";
-	ShowMap(options, false, isFirstPlayer);
 	ShowMap(options, true, !isFirstPlayer);
+	ShowMap(options, false, isFirstPlayer);
 	char hitX; int hitY;
 	cout << "Куда вы хотите ударить?\n[?] - "; 
 	cin >> hitX; 
@@ -796,7 +800,7 @@ void BotMove(Options& options) {
 	cout << endl << "Противник ударил по координатам: " << endl << "[X]: " << i1 << endl << "[Y]: " << i2;
 }
 
-void End(bool isFirstPlWin) {
+void End(Options& options, bool isFirstPlWin) {
 	Sleep(1000);
 	system("CLS");
 	cout << "Игра окончена!\nПобеда за:" << endl;
@@ -808,7 +812,7 @@ void End(bool isFirstPlWin) {
 		cout << "Игроком №2";
 	}
 	Sleep(5000);
-	exit(0);
+	ShowMenu(options);
 }
 //Блок методов для главного меню
 void SinglePlayer(Options& options) {
@@ -818,20 +822,20 @@ void SinglePlayer(Options& options) {
 		RandomShip(options, false);
 	}
 	else {
-		PlaceShip(options);
+		PlaceShip(options, true);
 		RandomShip(options, false);
 	}
 	for (;;) {
 		system("cls");
 		PlayerMove(options,true);
-		BotMove(options);
-		Sleep(500);
 		if (options.ShipCount1 <= 0) {
-			End(false);
+			End(options,false);
 		}
-		else if (options.ShipCount2 <= 0) {
-			End(true);
+		BotMove(options);
+		if (options.ShipCount2 <= 0) {
+			End(options,true);
 		}
+		Sleep(500);
 	}
 }
 
@@ -850,11 +854,11 @@ void MultiPlayer(Options& options) {
 		system("cls");
 		PlayerMove(options, true);
 		if (options.ShipCount2 <= 0) {
-			End(true);
+			End(options,true);
 		}
 		PlayerMove(options, false);
 		if (options.ShipCount1 <= 0) {
-			End(false);
+			End(options,false);
 		}
 	}
 }
