@@ -720,7 +720,7 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	int Map[12][12];
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (isFirstPlayer) {
+			if (!isFirstPlayer) {
 				Map[i][j] = options.FirstMap[i][j];
 			}
 			else {
@@ -731,16 +731,18 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	system("cls");
 	//сюда вставить cout карты врага через ShowMap();
 	cout << "Ваша ход!\n\n";
-	ShowMap(options, true, !isFirstPlayer);
-	ShowMap(options, false, isFirstPlayer);
+	ShowMap(options, true, isFirstPlayer);
+	ShowMap(options, false, !isFirstPlayer);
 	char hitX; int hitY;
 	cout << "Куда вы хотите ударить?\n[?] - "; 
 	cin >> hitX; 
 	hitX = CharToInt(hitX);
 	cin >> hitY;
-	if (hitX < 1 || hitX > 11 || hitY < 1 || hitY > 11 || options.SecondMap[hitY][hitX] == 3 || options.SecondMap[hitY][hitX] == 4) {
-		hitX = rand() % 9 + 1;
-		hitY = rand() % 9 + 1;
+	bool isRerun = hitX < 1 || hitX > 11 || hitY < 1 || hitY > 11 || options.SecondMap[hitY][hitX] == 3 || options.SecondMap[hitY][hitX] == 4;
+	for (; isRerun;) {
+		hitX = rand() % 10 + 1;
+		hitY = rand() % 10 + 1;
+		isRerun = options.SecondMap[hitY][hitX] == 3 || options.SecondMap[hitY][hitX] == 4;
 	}
 	if (Map[hitY][hitX] == 0 || Map[hitY][hitX] == 8) {
 		Map[hitY][hitX] = 3;
@@ -753,11 +755,10 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 		else {
 			options.ShipCount1--;
 		}
-
 	}
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (isFirstPlayer) {
+			if (!isFirstPlayer) {
 				options.FirstMap[i][j] = Map[i][j];
 			}
 			else {
