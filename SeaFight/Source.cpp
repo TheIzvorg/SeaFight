@@ -521,7 +521,7 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 	}
 }
 
-bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
+bool PlaceShip(Options& options, bool isFirstMap = true) {
 	bool isStop = false;
 	int Map[12][12];
 	if (isFirstMap) {
@@ -538,33 +538,29 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 			}
 		}
 	}
-	const int C = 4;
-	int cord[C][2];
-	for (int x = 0, count = 0; x < 12; x++) {
-		for (int y = 0; y < 12; y++) {
-			if (Map[y][x] == 9) {
-				cord[count][0] = x;
-				cord[count][1] = y;
-				count++;
-				if (count == C-1) {
-					break;
+	for (int o4 = 0; o4 < 1; o4++) {
+		Map[6][6] = 9;
+		Map[6][7] = 9;
+		Map[6][8] = 9;
+		Map[6][9] = 9;
+		int cord[4][2];
+		for (int y = 0, count = 0; y < 12; y++) {
+			for (int x = 0; x < 12; x++) {
+				if (Map[y][x] == 9) {
+					cord[count][0] = x;
+					cord[count][1] = y;
+					count++;
 				}
 			}
-			else {
-			}
 		}
-		if (count == C-1) {
-			break;
-		}
-	}
-	while (!isStop) {
-		switch (_getch())
-		{
+		while (!isStop) {
+			switch (_getch())
+			{
 			case 'A':
 			case 'a':
 			case 75:
-				if (Map[cord[C-1][1]][cord[C-1][0] - 1] != 1 && Map[cord[0][1]][cord[0][0] - 1] != 1) {
-					for (int i = 0; i < C; i++) {
+				if (Map[cord[3][1]][cord[3][0] - 1] != 1 && Map[cord[0][1]][cord[0][0] - 1] != 1) {
+					for (int i = 0; i < 4; i++) {
 						Map[cord[i][1]][cord[i][0]] = 0;
 						cord[i][0]--;
 						Map[cord[i][1]][cord[i][0]] = 9;
@@ -575,37 +571,16 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 			case 'D':
 			case 'd':
 			case 77:
-				if (Map[cord[C-1][1]][cord[C-1][0] + 1] != 1 && Map[cord[0][1]][cord[0][0] + 1] != 1) {
-					for (int i = C-1; i >= 0; i--) {
-						Map[cord[i][1]][cord[i][0]] = 0;
-						cord[i][0]++;
-						Map[cord[i][1]][cord[i][0]] = 9;
-					}
-				}
 				isStop = true;
 				break;
 			case 'S':
 			case 's':
 			case 80:
-				if (Map[cord[C-1][1]+1][cord[C-1][0]] != 1 && Map[cord[0][1]+1][cord[0][0]] != 1) {
-					for (int i = C-1; i >= 0; i--) {
-						Map[cord[i][1]][cord[i][0]] = 0;
-						cord[i][1]++;
-						Map[cord[i][1]][cord[i][0]] = 9;
-					}
-				}
 				isStop = true;
 				break;
 			case 'W':
 			case 'w':
 			case 72:
-				if (Map[cord[C-1][1] - 1][cord[C-1][0]] != 1 && Map[cord[0][1] - 1][cord[0][0]] != 1) {
-					for (int i = 0; i < C; i++) {
-						Map[cord[i][1]][cord[i][0]] = 0;
-						cord[i][1]--;
-						Map[cord[i][1]][cord[i][0]] = 9;
-					}
-				}
 				isStop = true;
 				break;
 			case 'E':
@@ -616,11 +591,11 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 					int	bufferArray[4][4];
 					for (int i = 0; i < 4; i++) {
 						for (int j = 0; j < 4; j++) {
- 							bufferArray[i][j] = Map[cord[i][0]][cord[j][1] + j / 2];
+							bufferArray[i][j] = Map[cord[i][0]][cord[j][1] + j / 2];
 						}
 					}
 					int buf[4][4];
-					for (int i = 0; i < 4; i++){
+					for (int i = 0; i < 4; i++) {
 						Map[cord[i][1]][cord[i][0]] = 0;
 						for (int j = 0; j < 4; j++) {
 							buf[j][i] = bufferArray[i][j];
@@ -629,7 +604,7 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 					for (int i = 0; i < 4; i++) {
 						for (int j = 0; j < 4; j++) {
 							if (buf[i][j] == 9) {
-								Map[cord[i][1]+i][cord[j][0]+j] = buf[i][j];
+								Map[cord[i][1] + i][cord[j][0] + j] = buf[i][j];
 							}
 						}
 					}
@@ -647,7 +622,20 @@ bool PlaceShip(Options& options, int D = 1, bool isFirstMap = true) {
 				return true;
 				isStop = true;
 				break;
+			}
 		}
+	}
+	for (int o3 = 0; o3 < 2; o3++) {
+		int cord[3][2];
+
+	}
+	for (int o2 = 0; o2 < 3; o2++) {
+		int cord[2][2];
+
+	}
+	for (int o1 = 0; o1 < 4; o1++) {
+		int cord[1][2];
+
 	}
 	if (isFirstMap) {
 		for (int i = 0; i < 12; i++) {
@@ -830,10 +818,12 @@ void SinglePlayer(Options& options) {
 		PlayerMove(options,true);
 		if (options.ShipCount1 <= 0) {
 			End(options,false);
+			break;
 		}
 		BotMove(options);
 		if (options.ShipCount2 <= 0) {
 			End(options,true);
+			break;
 		}
 		Sleep(500);
 	}
