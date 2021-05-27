@@ -747,6 +747,30 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 		Map[hitY][hitX] = 3;
 	}
 	else if (Map[hitY][hitX] == 2) {
+		/*if (Map[hitY][hitX + 1] != 2 && Map[hitY + 1][hitX] != 2 &&
+			Map[hitY][hitX + 1] != 4 && Map[hitY + 1][hitX] != 4) {
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					int cords[4][2] = { 0 };
+					if (Map[hitY + j][hitX + i] != 1 && Map[hitY + j][hitX + i] != 2) {
+						if (Map[hitY + j][hitX + i] == 4) {
+							cords[0][0] = hitY + j; cords[0][1] = hitX = i;
+						}
+						else {
+							Map[hitY + j][hitX + i] = 3;
+						}
+					}
+					if (Map[hitY + i][hitX + j] != 1 && Map[hitY + i][hitX + j] != 2) {
+						if (Map[hitY + i][hitX + j] == 4) {
+							cords[0][0] = hitY + i; cords[0][1] = hitX = j;
+						}
+						else {
+							Map[hitY + i][hitX + j] = 3;
+						}
+					}
+				}
+			}
+		}*/
 		Map[hitY][hitX] = 4;
 		options.ShipCount[0 + isFirstPlayer]--;
 	}
@@ -774,6 +798,19 @@ void BotMove(Options& options) {
 		options.FirstMap[i1][i2] = 3;
 	}
 	else if (options.FirstMap[i1][i2] == 2) {
+		/*if ((options.FirstMap[i1][i2 + 1] != 2 && options.FirstMap[i1 + 1][i2] != 2 &&
+			options.FirstMap[i1][i2 + 1] != 4 && options.FirstMap[i1 + 1][i2] != 4) ||
+			(options.FirstMap[i1][i2 - 1] != 2 && options.FirstMap[i1 - 1][i2] != 2 &&
+				options.FirstMap[i1][i2 - 1] != 4 && options.FirstMap[i1 - 1][i2] != 4)) {
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					if (options.FirstMap[i1 + j][i2 + i] != 1 && options.FirstMap[i1 + j][i2 + i] != 2 && options.FirstMap[i1 + j][i2 + i] != 4)
+						options.FirstMap[i1 + j][i2 + i] = 3;
+					if (options.FirstMap[i1 + i][i2 + j] != 1 && options.FirstMap[i1 + i][i2 + j] != 2 && options.FirstMap[i1 + i][i2 + j] != 4)
+						options.FirstMap[i1 + i][i2 + j] = 3;
+				}
+			}
+		}*/
 		options.FirstMap[i1][i2] = 4;
 		options.ShipCount[0]--;
 	}*/
