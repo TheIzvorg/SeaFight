@@ -794,7 +794,8 @@ void BotMove(Options& options) {
 		isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
 	} while (isRerun);
 	
-	/*if (options.FirstMap[i1][i2] == 0 || options.FirstMap[i1][i2] == 8) {
+	/*
+	if (options.FirstMap[i1][i2] == 0 || options.FirstMap[i1][i2] == 8) {
 		options.FirstMap[i1][i2] = 3;
 	}
 	else if (options.FirstMap[i1][i2] == 2) {
@@ -810,10 +811,11 @@ void BotMove(Options& options) {
 						options.FirstMap[i1 + i][i2 + j] = 3;
 				}
 			}
-		}*/
+		}
 		options.FirstMap[i1][i2] = 4;
 		options.ShipCount[0]--;
-	}*/
+	}
+	*/
 
 	if (options.FirstMap[i1][i2] == 2) {
 		options.FirstMap[i1][i2] = 4;
