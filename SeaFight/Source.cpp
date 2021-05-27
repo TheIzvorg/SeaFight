@@ -56,6 +56,7 @@ void SetColor(char symbol, int color) {
 
 void ShowMap(Options options, bool move, bool isFirstPlayer = false) {
 	int Map[12][12];
+	/*
 	if (isFirstPlayer) {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -72,6 +73,18 @@ void ShowMap(Options options, bool move, bool isFirstPlayer = false) {
 		}
 		cout << "Второй:\n";
 	}
+	*/
+
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			Map[i][j] = isFirstPlayer ? options.FirstMap[i][j] : options.SecondMap[i][j];
+		}
+	}
+	if (isFirstPlayer)
+		cout << "Первый:\n";
+	else
+		cout << "Второй:\n";
+
 	cout << "     a b c d e f g h i j" << endl;
 	for (int i = 0; i < 12; i++) {
 		if (i>= 1 && i <= 9)
@@ -107,6 +120,7 @@ void ShowMap(Options options, bool move, bool isFirstPlayer = false) {
 void RandomShip(Options& options, bool isFirstMap = true) {
 	srand(time(0) % (rand() / 2 - 5 / 3 * 2));
 	int Map[12][12];
+	/*
 	if (isFirstMap) {
 		for (int i = 0; i < 12; i++) {
 			for (int j = 0; j < 12; j++) {
@@ -119,6 +133,12 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 			for (int j = 0; j < 12; j++) {
 				Map[i][j] = options.SecondMap[i][j];
 			}
+		}
+	}
+	*/
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			Map[i][j] = isFirstMap ? options.FirstMap[i][j] : options.SecondMap[i][j];
 		}
 	}
 	options.shipXL = 0;
@@ -502,25 +522,15 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 			options.ShipCount[1 - isFirstMap] += 1;
 		}
 	}
+	
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (i == 0 || i == 11 || j == 0 || j == 11) {
+			if (i == 0 || i == 11 || j == 0 || j == 11)
 				Map[i][j] = 1;
-			}
-		}
-	}
-	if (isFirstMap) {
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
+			if (isFirstMap)
 				options.FirstMap[i][j] = Map[i][j];
-			}
-		}
-	}
-	else {
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
+			else
 				options.SecondMap[i][j] = Map[i][j];
-			}
 		}
 	}
 }
@@ -528,20 +538,13 @@ void RandomShip(Options& options, bool isFirstMap = true) {
 bool PlaceShip(Options& options, bool isFirstMap = true) {
 	bool isStop = false;
 	int Map[12][12];
-	if (isFirstMap) {
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
-				Map[i][j] = options.FirstMap[i][j];
-			}
+	
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			Map[i][j] = isFirstMap ? options.FirstMap[i][j] : options.SecondMap[i][j];
 		}
 	}
-	else {
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
-				Map[i][j] = options.SecondMap[i][j];
-			}
-		}
-	}
+
 	for (int o4 = 0; o4 < 1; o4++) {
 		Map[6][6] = 9;
 		Map[6][7] = 9;
@@ -641,20 +644,16 @@ bool PlaceShip(Options& options, bool isFirstMap = true) {
 		int cord[1][2];
 
 	}
-	if (isFirstMap) {
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
+	
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			if (isFirstMap)
 				options.FirstMap[i][j] = Map[i][j];
-			}
-		}
-	}
-	else {
-		for (int i = 0; i < 12; i++) {
-			for (int j = 0; j < 12; j++) {
+			else
 				options.SecondMap[i][j] = Map[i][j];
-			}
 		}
 	}
+
 	return false;
 }
 
@@ -723,12 +722,7 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	int Map[12][12];
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (!isFirstPlayer) {
-				Map[i][j] = options.FirstMap[i][j];
-			}
-			else {
-				Map[i][j] = options.SecondMap[i][j];
-			}
+			Map[i][j] = !isFirstPlayer ? options.FirstMap[i][j] : options.SecondMap[i][j];
 		}
 	}
 	system("cls");
@@ -758,33 +752,40 @@ void PlayerMove(Options& options, bool isFirstPlayer = true) {
 	}
 	for (int i = 0; i < 12; i++) {
 		for (int j = 0; j < 12; j++) {
-			if (!isFirstPlayer) {
+			if (!isFirstPlayer)
 				options.FirstMap[i][j] = Map[i][j];
-			}
-			else {
+			else
 				options.SecondMap[i][j] = Map[i][j];
-			}
 		}
 	}
 }
 
 void BotMove(Options& options) {
 	srand(time(0));
-	int i1 = rand() % 10 + 1,
-		i2 = rand() % 10 + 1;
-	bool isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
-	for (int i = 0; isRerun; i++) {
+	int i1,i2;
+	bool isRerun;
+	do {
 		i1 = rand() % 10 + 1;
 		i2 = rand() % 10 + 1;
 		isRerun = options.FirstMap[i1][i2] == 3 || options.FirstMap[i1][i2] == 4;
-	}
-	if (options.FirstMap[i1][i2] == 0 || options.FirstMap[i1][i2] == 8) {
+	} while (isRerun);
+	
+	/*if (options.FirstMap[i1][i2] == 0 || options.FirstMap[i1][i2] == 8) {
 		options.FirstMap[i1][i2] = 3;
 	}
 	else if (options.FirstMap[i1][i2] == 2) {
 		options.FirstMap[i1][i2] = 4;
 		options.ShipCount[0]--;
+	}*/
+
+	if (options.FirstMap[i1][i2] == 2) {
+		options.FirstMap[i1][i2] = 4;
+		options.ShipCount[0]--;
 	}
+	else {
+		options.FirstMap[i1][i2] = 3;
+	}
+
 	cout << endl << "Противник ударил по координатам: " << endl << "[X]: " << i1 << endl << "[Y]: " << i2;
 }
 
@@ -792,13 +793,11 @@ void End(Options& options, bool isFirstPlWin) {
 	Sleep(1000);
 	system("CLS");
 	cout << "Игра окончена!\nПобеда за:" << endl;
-	if (isFirstPlWin) {
+	if (isFirstPlWin)
 		cout << "Игроком №1";
-	}
 	else
-	{
 		cout << "Игроком №2";
-	}
+
 	Options ender;
 	ender.ShipColor = options.ShipColor;
 	ender.isRandomPlace = options.isRandomPlace;
@@ -813,14 +812,11 @@ void End(Options& options, bool isFirstPlWin) {
 
 void SinglePlayer(Options& options) {
 	cout << "\n\n\t\t\t\t\tВы выбрали режим одиночной игры\n\n";
-	if (options.isRandomPlace) {
+	if (options.isRandomPlace)
 		RandomShip(options, true);
-		RandomShip(options, false);
-	}
-	else {
+	else
 		PlaceShip(options, true);
-		RandomShip(options, false);
-	}
+	RandomShip(options, false);
 	for (;;) {
 		system("cls");
 		PlayerMove(options,true);
@@ -848,15 +844,11 @@ void MultiPlayer(Options& options) {
 		PlaceShip(options, true);
 		PlaceShip(options, false);
 	}
-	for (;;) {
-		system("cls");
-		PlayerMove(options, true);
-		if (options.ShipCount[0] <= 0) {
-			End(options,true);
-		}
-		PlayerMove(options, false);
-		if (options.ShipCount[1] <= 0) {
-			End(options,false);
+	for (bool move = true;;move = !move) {
+		if (move) { system("cls"); }
+		PlayerMove(options, move);
+		if (options.ShipCount[!move] <= 0) {
+			End(options, move);
 		}
 	}
 }
@@ -930,5 +922,5 @@ int main() {
 	Options options;
 	do {
 		ShowMenu(options);
-	} while (options.ShipCount[0] != 0 && options.ShipCount[1] != 0);
+	} while (true);
 }
